@@ -549,8 +549,8 @@ build_container() {
   export APPLICATION="$APP"
   export app="$NSAPP"
   export PASSWORD="$PW"
-  export VERBOSE="$VERB"
-  export SSH_ROOT="${SSH}"
+  export VERBOSE="yes"
+  export SSH_ROOT="yes"
   export CTID="$CT_ID"
   export CTTYPE="$CT_TYPE"
   export PCT_OSTYPE="$var_os"
@@ -559,7 +559,7 @@ build_container() {
   export PCT_OPTIONS="
     -features $FEATURES
     -hostname $HN
-    -tags pubkey-helper-scripts
+    -tags pubkey-helper-scripts,pubkey
     $SD
     $NS
     -net0 name=eth0,bridge=$BRG$MAC,ip=$NET$GATE$VLAN$MTU
@@ -634,7 +634,9 @@ http://dl-cdn.alpinelinux.org/alpine/latest-stable/community
 EOF'
     pct exec "$CTID" -- ash -c "apk add bash >/dev/null"
   fi
+  msg_info  "Script URL: https://raw.githubusercontent.com/beeman/Proxmox/main/install/$var_install.sh"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/beeman/Proxmox/main/install/$var_install.sh)" || exit
+  msg_info "Installation Complete"
 
 }
 
